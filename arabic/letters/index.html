@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabic Letters from the Quran</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.3) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(1deg); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 60px;
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+            background-size: 200% 100%;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .title {
+            color: #2d3748;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .arabic-letter {
+            font-size: 12rem;
+            font-weight: bold;
+            margin: 40px 0;
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.5s ease;
+            animation: letterPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes letterPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .letter-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #667eea;
+        }
+
+        .info-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .info-content {
+            font-size: 1.5rem;
+            color: #4a5568;
+        }
+
+        .arabic-word {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.active {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+        }
+
+        .settings-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #667eea;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .settings-toggle:hover {
+            transform: scale(1.1) rotate(90deg);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .settings-drawer {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            padding: 80px 30px 30px;
+            overflow-y: auto;
+        }
+
+        .settings-drawer.open {
+            right: 0;
+        }
+
+        .settings-drawer h3 {
+            color: #2d3748;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .setting-group {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .setting-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .setting-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .setting-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: #667eea;
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.1s ease;
+            z-index: 1000;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 768px) {
+            .main-card {
+                padding: 30px 20px;
+            }
+
+            .arabic-letter {
+                font-size: 8rem;
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .letter-info {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .controls {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .settings-drawer {
+                width: 100%;
+                right: -100%;
+            }
+        }
+
+        .letter-count {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: #2d3748;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<div class="background-pattern"></div>
+
+<div class="letter-count">
+    <span id="currentLetter">1</span> / <span id="totalLetters">28</span>
+</div>
+
+<button class="settings-toggle" onclick="toggleSettings()">
+    <i class="fas fa-cog"></i>
+</button>
+
+<div class="overlay" id="overlay" onclick="closeSettings()"></div>
+
+<div class="settings-drawer" id="settingsDrawer">
+    <h3><i class="fas fa-cogs"></i> Settings</h3>
+
+    <div class="setting-group">
+        <label class="setting-label">Pause Between Letters (seconds)</label>
+        <input type="range" class="setting-input" id="pauseDuration" min="1" max="10" value="3" oninput="updatePauseDuration(this.value)">
+        <span id="pauseValue">3</span> seconds
+    </div>
+
+    <div class="setting-group">
+        <div class="checkbox-container">
+            <input type="checkbox" id="randomOrder" class="checkbox" onchange="toggleRandomOrder()">
+            <label for="randomOrder" class="setting-label">Random Order</label>
+        </div>
+    </div>
+
+    <div class="setting-group">
+        <div class="checkbox-container">
+            <input type="checkbox" id="showHeavyLight" class="checkbox" onchange="toggleHeavyLight()">
+            <label for="showHeavyLight" class="setting-label">Show Heavy/Light Classification</label>
+        </div>
+    </div>
+
+    <div class="setting-group">
+        <div class="checkbox-container">
+            <input type="checkbox" id="randomColors" class="checkbox" onchange="toggleRandomColors()">
+            <label for="randomColors" class="setting-label">Random Colors</label>
+        </div>
+    </div>
+
+    <div class="setting-group">
+        <div class="checkbox-container">
+            <input type="checkbox" id="soundEffects" class="checkbox" onchange="toggleSoundEffects()">
+            <label for="soundEffects" class="setting-label">Sound Effects</label>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="main-card">
+        <h1 class="title">Arabic Letters from the Quran</h1>
+
+        <div class="arabic-letter" id="arabicLetter">ا</div>
+
+        <div class="letter-info">
+            <div class="info-box">
+                <div class="info-title">Letter Name</div>
+                <div class="info-content" id="letterName">Alif</div>
+            </div>
+            <div class="info-box">
+                <div class="info-title">Example Word</div>
+                <div class="info-content arabic-word" id="exampleWord">الله</div>
+                <div style="font-size: 0.9rem; color: #666; margin-top: 5px;" id="wordMeaning">Allah</div>
+            </div>
+            <div class="info-box" id="heavyLightBox" style="display: none;">
+                <div class="info-title">Classification</div>
+                <div class="info-content" id="heavyLight">Light</div>
+            </div>
+            <div class="info-box">
+                <div class="info-title">Progress</div>
+                <div class="info-content">
+                    <div class="progress-bar" id="progressBar" style="position: relative; width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px;">
+                        <div style="height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 4px; width: 0%; transition: width 0.3s ease;" id="progress"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="playPauseBtn" onclick="togglePlayPause()">
+                <i class="fas fa-pause"></i> Pause
+            </button>
+            <button class="btn" onclick="previousLetter()">
+                <i class="fas fa-backward"></i> Previous
+            </button>
+            <button class="btn" onclick="nextLetter()">
+                <i class="fas fa-forward"></i> Next
+            </button>
+            <button class="btn" onclick="resetSequence()">
+                <i class="fas fa-refresh"></i> Reset
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const arabicLetters = [
+        { letter: 'ا', name: 'Alif', example: 'الله', meaning: 'Allah', heavy: false, color: '#e53e3e' },
+        { letter: 'ب', name: 'Baa', example: 'بسم', meaning: 'Bismillah', heavy: false, color: '#dd6b20' },
+        { letter: 'ت', name: 'Taa', example: 'تبارك', meaning: 'Tabarak', heavy: false, color: '#d69e2e' },
+        { letter: 'ث', name: 'Thaa', example: 'ثواب', meaning: 'Thawab', heavy: false, color: '#38a169' },
+        { letter: 'ج', name: 'Jeem', example: 'جنة', meaning: 'Jannah', heavy: false, color: '#319795' },
+        { letter: 'ح', name: 'Haa', example: 'حمد', meaning: 'Hamd', heavy: false, color: '#3182ce' },
+        { letter: 'خ', name: 'Khaa', example: 'خير', meaning: 'Khayr', heavy: true, color: '#553c9a' },
+        { letter: 'د', name: 'Daal', example: 'دين', meaning: 'Deen', heavy: false, color: '#b83280' },
+        { letter: 'ذ', name: 'Thaal', example: 'ذكر', meaning: 'Dhikr', heavy: false, color: '#e53e3e' },
+        { letter: 'ر', name: 'Raa', example: 'رحمن', meaning: 'Rahman', heavy: true, color: '#dd6b20' },
+        { letter: 'ز', name: 'Zaay', example: 'زكاة', meaning: 'Zakah', heavy: false, color: '#d69e2e' },
+        { letter: 'س', name: 'Seen', example: 'سلام', meaning: 'Salaam', heavy: false, color: '#38a169' },
+        { letter: 'ش', name: 'Sheen', example: 'شهادة', meaning: 'Shahadah', heavy: false, color: '#319795' },
+        { letter: 'ص', name: 'Saad', example: 'صلاة', meaning: 'Salah', heavy: true, color: '#3182ce' },
+        { letter: 'ض', name: 'Daad', example: 'ضلال', meaning: 'Dalaal', heavy: true, color: '#553c9a' },
+        { letter: 'ط', name: 'Taa', example: 'طاعة', meaning: 'Taa\'ah', heavy: true, color: '#b83280' },
+        { letter: 'ظ', name: 'Dhaa', example: 'ظلم', meaning: 'Dhulm', heavy: true, color: '#e53e3e' },
+        { letter: 'ع', name: 'Ayn', example: 'علم', meaning: 'Ilm', heavy: false, color: '#dd6b20' },
+        { letter: 'غ', name: 'Ghayn', example: 'غفور', meaning: 'Ghafur', heavy: true, color: '#d69e2e' },
+        { letter: 'ف', name: 'Faa', example: 'فتح', meaning: 'Fath', heavy: false, color: '#38a169' },
+        { letter: 'ق', name: 'Qaaf', example: 'قرآن', meaning: 'Quran', heavy: true, color: '#319795' },
+        { letter: 'ك', name: 'Kaaf', example: 'كتاب', meaning: 'Kitab', heavy: false, color: '#3182ce' },
+        { letter: 'ل', name: 'Laam', example: 'لا إله', meaning: 'La ilaha', heavy: false, color: '#553c9a' },
+        { letter: 'م', name: 'Meem', example: 'محمد', meaning: 'Muhammad', heavy: false, color: '#b83280' },
+        { letter: 'ن', name: 'Noon', example: 'نور', meaning: 'Nur', heavy: false, color: '#e53e3e' },
+        { letter: 'ه', name: 'Haa', example: 'هدى', meaning: 'Huda', heavy: false, color: '#dd6b20' },
+        { letter: 'و', name: 'Waaw', example: 'وضوء', meaning: 'Wudu', heavy: false, color: '#d69e2e' },
+        { letter: 'ي', name: 'Yaa', example: 'يوم', meaning: 'Yawm', heavy: false, color: '#38a169' }
+    ];
+
+    let currentIndex = 0;
+    let isPlaying = true;
+    let intervalId;
+    let pauseDuration = 3000; // 3 seconds
+    let isRandomOrder = false;
+    let showHeavyLight = false;
+    let useRandomColors = false;
+    let soundEnabled = false;
+    let sequence = [...Array(28).keys()];
+
+    function updateDisplay() {
+        const current = arabicLetters[sequence[currentIndex]];
+        const letterElement = document.getElementById('arabicLetter');
+
+        letterElement.textContent = current.letter;
+        letterElement.style.color = useRandomColors ? getRandomColor() : current.color;
+
+        document.getElementById('letterName').textContent = current.name;
+        document.getElementById('exampleWord').textContent = current.example;
+        document.getElementById('wordMeaning').textContent = current.meaning;
+        document.getElementById('currentLetter').textContent = currentIndex + 1;
+
+        // Update progress
+        const progress = ((currentIndex + 1) / 28) * 100;
+        document.getElementById('progress').style.width = progress + '%';
+
+        // Show/hide heavy/light classification
+        const heavyLightBox = document.getElementById('heavyLightBox');
+        if (showHeavyLight) {
+            heavyLightBox.style.display = 'block';
+            document.getElementById('heavyLight').textContent = current.heavy ? 'Heavy' : 'Light';
+            document.getElementById('heavyLight').style.color = current.heavy ? '#e53e3e' : '#38a169';
+        } else {
+            heavyLightBox.style.display = 'none';
+        }
+
+        // Play sound effect
+        if (soundEnabled) {
+            playTone();
+        }
+
+        // Add animation
+        letterElement.style.transform = 'scale(0.8)';
+        setTimeout(() => {
+            letterElement.style.transform = 'scale(1)';
+        }, 100);
+    }
+
+    function nextLetter() {
+        currentIndex = (currentIndex + 1) % 28;
+        updateDisplay();
+    }
+
+    function previousLetter() {
+        currentIndex = (currentIndex - 1 + 28) % 28;
+        updateDisplay();
+    }
+
+    function togglePlayPause() {
+        const btn = document.getElementById('playPauseBtn');
+        if (isPlaying) {
+            clearInterval(intervalId);
+            btn.innerHTML = '<i class="fas fa-play"></i> Play';
+            btn.classList.remove('active');
+            isPlaying = false;
+        } else {
+            startAutoPlay();
+            btn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+            btn.classList.add('active');
+            isPlaying = true;
+        }
+    }
+
+    function startAutoPlay() {
+        intervalId = setInterval(() => {
+            nextLetter();
+        }, pauseDuration);
+    }
+
+    function resetSequence() {
+        currentIndex = 0;
+        if (isRandomOrder) {
+            shuffleSequence();
+        } else {
+            sequence = [...Array(28).keys()];
+        }
+        updateDisplay();
+    }
+
+    function shuffleSequence() {
+        for (let i = sequence.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [sequence[i], sequence[j]] = [sequence[j], sequence[i]];
+        }
+    }
+
+    function toggleSettings() {
+        const drawer = document.getElementById('settingsDrawer');
+        const overlay = document.getElementById('overlay');
+        drawer.classList.toggle('open');
+        overlay.classList.toggle('active');
+    }
+
+    function closeSettings() {
+        const drawer = document.getElementById('settingsDrawer');
+        const overlay = document.getElementById('overlay');
+        drawer.classList.remove('open');
+        overlay.classList.remove('active');
+    }
+
+    function updatePauseDuration(value) {
+        pauseDuration = value * 1000;
+        document.getElementById('pauseValue').textContent = value;
+        if (isPlaying) {
+            clearInterval(intervalId);
+            startAutoPlay();
+        }
+    }
+
+    function toggleRandomOrder() {
+        isRandomOrder = document.getElementById('randomOrder').checked;
+        if (isRandomOrder) {
+            shuffleSequence();
+        } else {
+            sequence = [...Array(28).keys()];
+        }
+        resetSequence();
+    }
+
+    function toggleHeavyLight() {
+        showHeavyLight = document.getElementById('showHeavyLight').checked;
+        updateDisplay();
+    }
+
+    function toggleRandomColors() {
+        useRandomColors = document.getElementById('randomColors').checked;
+        updateDisplay();
+    }
+
+    function toggleSoundEffects() {
+        soundEnabled = document.getElementById('soundEffects').checked;
+    }
+
+    function getRandomColor() {
+        const colors = ['#e53e3e', '#dd6b20', '#d69e2e', '#38a169', '#319795', '#3182ce', '#553c9a', '#b83280'];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function playTone() {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.frequency.setValueAtTime(440 + (currentIndex * 20), audioContext.currentTime);
+        oscillator.type = 'sine';
+
+        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.5);
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+        updateDisplay();
+        startAutoPlay();
+
+        // Add keyboard controls
+        document.addEventListener('keydown', function(e) {
+            switch(e.code) {
+                case 'Space':
+                    e.preventDefault();
+                    togglePlayPause();
+                    break;
+                case 'ArrowRight':
+                    nextLetter();
+                    break;
+                case 'ArrowLeft':
+                    previousLetter();
+                    break;
+                case 'KeyR':
+                    resetSequence();
+                    break;
+            }
+        });
+    });
+</script>
+</body>
+</html>
