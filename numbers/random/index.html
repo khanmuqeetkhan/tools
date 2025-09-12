@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Fun - Learning Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Floating shapes for background animation */
+        .floating-shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape-1 { top: 10%; left: 10%; animation-delay: 0s; }
+        .shape-2 { top: 20%; right: 15%; animation-delay: 2s; }
+        .shape-3 { bottom: 20%; left: 20%; animation-delay: 4s; }
+        .shape-4 { bottom: 10%; right: 25%; animation-delay: 1s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            z-index: 2;
+        }
+
+        .number-display {
+            font-size: 25vw;
+            font-weight: bold;
+            text-align: center;
+            color: #ff6b6b;
+            text-shadow: 8px 8px 16px rgba(0,0,0,0.3);
+            animation: bounceIn 0.8s ease-out;
+            user-select: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .number-display:hover {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.05) rotate(5deg); }
+            70% { transform: scale(0.9) rotate(-2deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse { animation: pulse 0.6s ease-in-out; }
+
+        /* Settings Panel */
+        .settings-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff9a56, #ff6b6b);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            font-size: 24px;
+        }
+
+        .settings-button:hover {
+            transform: scale(1.1) rotate(45deg);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        .settings-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            backdrop-filter: blur(10px);
+            transition: right 0.3s ease;
+            z-index: 999;
+            padding: 80px 30px 30px;
+            overflow-y: auto;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.3);
+        }
+
+        .settings-panel.open {
+            right: 0;
+        }
+
+        .setting-group {
+            margin-bottom: 25px;
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .setting-label {
+            display: block;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .setting-input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            background: rgba(255,255,255,0.9);
+            margin-bottom: 10px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .control-buttons {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .control-btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            color: white;
+        }
+
+        .pause-btn {
+            background: linear-gradient(135deg, #ff9a56, #ff6b6b);
+            color: white;
+        }
+
+        .restart-btn {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            color: #333;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .fun-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 2rem;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        .show-message {
+            opacity: 1;
+            animation: messageSlide 2s ease-in-out;
+        }
+
+        @keyframes messageSlide {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            20% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            80% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+        }
+
+        /* Number colors */
+        .color-0 { color: #e74c3c; }
+        .color-1 { color: #3498db; }
+        .color-2 { color: #2ecc71; }
+        .color-3 { color: #f39c12; }
+        .color-4 { color: #9b59b6; }
+        .color-5 { color: #1abc9c; }
+        .color-6 { color: #e67e22; }
+        .color-7 { color: #34495e; }
+        .color-8 { color: #e91e63; }
+        .color-9 { color: #00bcd4; }
+
+        @media (max-width: 768px) {
+            .settings-panel {
+                width: 100%;
+                right: -100%;
+            }
+            .number-display {
+                font-size: 35vw;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Floating background shapes -->
+<div class="floating-shape shape-1">⭐</div>
+<div class="floating-shape shape-2">🎈</div>
+<div class="floating-shape shape-3">🎪</div>
+<div class="floating-shape shape-4">🎯</div>
+
+<div class="main-container">
+    <div id="numberDisplay" class="number-display">🎮</div>
+</div>
+
+<div class="fun-message" id="funMessage"></div>
+
+<button class="settings-button" id="settingsBtn">⚙️</button>
+
+<div class="settings-panel" id="settingsPanel">
+    <div class="setting-group">
+        <label class="setting-label">Pause Between Numbers (seconds):</label>
+        <input type="range" id="pauseSlider" class="setting-input" min="1" max="10" value="3" style="height: 30px;">
+        <div style="color: white; text-align: center;" id="pauseValue">3 seconds</div>
+    </div>
+
+    <div class="setting-group">
+        <label class="setting-label">Number Range:</label>
+        <div style="display: flex; gap: 10px;">
+            <input type="number" id="minRange" class="setting-input" value="1" min="0" max="100" placeholder="Min">
+            <input type="number" id="maxRange" class="setting-input" value="9" min="0" max="100" placeholder="Max">
+        </div>
+    </div>
+
+    <div class="setting-group">
+        <div class="checkbox-container">
+            <input type="checkbox" id="includeZero">
+            <label class="setting-label">Include Zero</label>
+        </div>
+        <div class="checkbox-container">
+            <input type="checkbox" id="randomOrder">
+            <label class="setting-label">Random Order</label>
+        </div>
+        <div class="checkbox-container">
+            <input type="checkbox" id="randomColors">
+            <label class="setting-label">Random Colors</label>
+        </div>
+        <div class="checkbox-container">
+            <input type="checkbox" id="enableSound" checked>
+            <label class="setting-label">Sound Effects</label>
+        </div>
+    </div>
+
+    <div class="setting-group">
+        <label class="setting-label">Fun Messages:</label>
+        <div class="checkbox-container">
+            <input type="checkbox" id="showMessages" checked>
+            <label class="setting-label">Show Encouraging Messages</label>
+        </div>
+    </div>
+</div>
+
+<div class="control-buttons">
+    <button class="control-btn play-btn" id="playBtn">▶️ Play</button>
+    <button class="control-btn pause-btn" id="pauseBtn">⏸️ Pause</button>
+    <button class="control-btn restart-btn" id="restartBtn">🔄 Restart</button>
+</div>
+
+<script>
+    class NumberGame {
+        constructor() {
+            this.currentIndex = 0;
+            this.numbers = [];
+            this.isPlaying = false;
+            this.intervalId = null;
+            this.audioContext = null;
+            this.settings = {
+                pause: 3,
+                minRange: 1,
+                maxRange: 9,
+                includeZero: false,
+                randomOrder: false,
+                randomColors: false,
+                enableSound: true,
+                showMessages: true
+            };
+            this.funMessages = [
+                "Great job! 🌟", "Awesome! 🎉", "You're doing amazing! 🚀",
+                "Keep it up! 💪", "Fantastic! 🎊", "You're a star! ⭐",
+                "Brilliant! 🌈", "Super! 🦸‍♂️", "Wonderful! 🎈"
+            ];
+            this.messageCount = 0;
+
+            this.initializeAudio();
+            this.setupEventListeners();
+            this.generateNumbers();
+        }
+
+        initializeAudio() {
+            try {
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+        }
+
+        playSound(frequency = 440, duration = 200) {
+            if (!this.audioContext || !this.settings.enableSound) return;
+
+            try {
+                const oscillator = this.audioContext.createOscillator();
+                const gainNode = this.audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(this.audioContext.destination);
+
+                oscillator.frequency.value = frequency;
+                oscillator.type = 'sine';
+
+                gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration / 1000);
+
+                oscillator.start(this.audioContext.currentTime);
+                oscillator.stop(this.audioContext.currentTime + duration / 1000);
+            } catch (e) {
+                console.log('Error playing sound');
+            }
+        }
+
+        setupEventListeners() {
+            // Settings panel toggle
+            document.getElementById('settingsBtn').addEventListener('click', () => {
+                document.getElementById('settingsPanel').classList.toggle('open');
+            });
+
+            // Settings inputs
+            document.getElementById('pauseSlider').addEventListener('input', (e) => {
+                this.settings.pause = parseInt(e.target.value);
+                document.getElementById('pauseValue').textContent = `${e.target.value} seconds`;
+            });
+
+            document.getElementById('minRange').addEventListener('change', (e) => {
+                this.settings.minRange = parseInt(e.target.value);
+                this.generateNumbers();
+            });
+
+            document.getElementById('maxRange').addEventListener('change', (e) => {
+                this.settings.maxRange = parseInt(e.target.value);
+                this.generateNumbers();
+            });
+
+            document.getElementById('includeZero').addEventListener('change', (e) => {
+                this.settings.includeZero = e.target.checked;
+                this.generateNumbers();
+            });
+
+            document.getElementById('randomOrder').addEventListener('change', (e) => {
+                this.settings.randomOrder = e.target.checked;
+                this.generateNumbers();
+            });
+
+            document.getElementById('randomColors').addEventListener('change', (e) => {
+                this.settings.randomColors = e.target.checked;
+            });
+
+            document.getElementById('enableSound').addEventListener('change', (e) => {
+                this.settings.enableSound = e.target.checked;
+            });
+
+            document.getElementById('showMessages').addEventListener('change', (e) => {
+                this.settings.showMessages = e.target.checked;
+            });
+
+            // Control buttons
+            document.getElementById('playBtn').addEventListener('click', () => this.play());
+            document.getElementById('pauseBtn').addEventListener('click', () => this.pause());
+            document.getElementById('restartBtn').addEventListener('click', () => this.restart());
+
+            // Click on number for interaction
+            document.getElementById('numberDisplay').addEventListener('click', () => {
+                this.onNumberClick();
+            });
+
+            // Close settings when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.settings-panel') && !e.target.closest('.settings-button')) {
+                    document.getElementById('settingsPanel').classList.remove('open');
+                }
+            });
+        }
+
+        generateNumbers() {
+            this.numbers = [];
+            const start = this.settings.includeZero ? 0 : this.settings.minRange;
+            const end = this.settings.maxRange;
+
+            for (let i = start; i <= end; i++) {
+                this.numbers.push(i);
+            }
+
+            if (this.settings.randomOrder) {
+                this.shuffleArray(this.numbers);
+            }
+
+            this.currentIndex = 0;
+        }
+
+        shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        displayNumber() {
+            if (this.numbers.length === 0) return;
+
+            const number = this.numbers[this.currentIndex];
+            const display = document.getElementById('numberDisplay');
+
+            display.textContent = number;
+            display.className = 'number-display';
+
+            // Add color
+            if (this.settings.randomColors) {
+                const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#e67e22', '#34495e', '#e91e63', '#00bcd4'];
+                display.style.color = colors[Math.floor(Math.random() * colors.length)];
+            } else {
+                display.style.color = '';
+                display.classList.add(`color-${number % 10}`);
+            }
+
+            // Play sound with different frequency for each number
+            this.playSound(200 + (number * 50), 300);
+
+            // Show fun message occasionally
+            this.messageCount++;
+            if (this.settings.showMessages && this.messageCount % 5 === 0) {
+                this.showFunMessage();
+            }
+
+            this.currentIndex = (this.currentIndex + 1) % this.numbers.length;
+
+            // Re-shuffle if random order and we've completed a cycle
+            if (this.currentIndex === 0 && this.settings.randomOrder) {
+                this.shuffleArray(this.numbers);
+            }
+        }
+
+        showFunMessage() {
+            const messageEl = document.getElementById('funMessage');
+            const randomMessage = this.funMessages[Math.floor(Math.random() * this.funMessages.length)];
+            messageEl.textContent = randomMessage;
+            messageEl.classList.add('show-message');
+
+            setTimeout(() => {
+                messageEl.classList.remove('show-message');
+            }, 2000);
+        }
+
+        onNumberClick() {
+            const display = document.getElementById('numberDisplay');
+            display.classList.add('pulse');
+            this.playSound(300 + Math.random() * 200, 150);
+
+            setTimeout(() => {
+                display.classList.remove('pulse');
+            }, 600);
+        }
+
+        play() {
+            if (this.isPlaying) return;
+
+            this.isPlaying = true;
+
+            // Resume audio context if needed
+            if (this.audioContext && this.audioContext.state === 'suspended') {
+                this.audioContext.resume();
+            }
+
+            this.displayNumber();
+            this.intervalId = setInterval(() => {
+                this.displayNumber();
+            }, this.settings.pause * 1000);
+
+            // Update button states
+            document.getElementById('playBtn').style.opacity = '0.5';
+            document.getElementById('pauseBtn').style.opacity = '1';
+        }
+
+        pause() {
+            this.isPlaying = false;
+            if (this.intervalId) {
+                clearInterval(this.intervalId);
+                this.intervalId = null;
+            }
+
+            // Update button states
+            document.getElementById('playBtn').style.opacity = '1';
+            document.getElementById('pauseBtn').style.opacity = '0.5';
+        }
+
+        restart() {
+            this.pause();
+            this.currentIndex = 0;
+            this.messageCount = 0;
+            this.generateNumbers();
+            document.getElementById('numberDisplay').textContent = '🎮';
+            document.getElementById('numberDisplay').className = 'number-display';
+            document.getElementById('objectsContainer').innerHTML = '';
+        }
+    }
+
+    // Initialize the game when the page loads
+    window.addEventListener('load', () => {
+        const game = new NumberGame();
+
+        // Auto-start after a short delay
+        setTimeout(() => {
+            game.play();
+        }, 1000);
+    });
+</script>
+</body>
+</html>

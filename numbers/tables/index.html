@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Tables Fun - Learn & Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4a5568;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .mode-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-learn {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-quiz {
+            background: linear-gradient(45deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn.active {
+            transform: scale(0.95);
+            opacity: 0.8;
+        }
+
+        .settings-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,107,107,0.4);
+        }
+
+        .settings-btn:hover {
+            transform: rotate(90deg);
+            box-shadow: 0 6px 20px rgba(255,107,107,0.6);
+        }
+
+        .settings-drawer {
+            position: fixed;
+            top: 0;
+            right: -350px;
+            width: 350px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            transition: right 0.3s ease;
+            padding: 2rem;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .settings-drawer.open {
+            right: 0;
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .setting-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .setting-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .setting-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .range-inputs {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .range-inputs input {
+            flex: 1;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            min-width: 600px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .welcome-screen h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #4a5568;
+        }
+
+        .welcome-screen p {
+            font-size: 1.3rem;
+            color: #718096;
+            margin-bottom: 2rem;
+        }
+
+        .table-selector {
+            margin-bottom: 2rem;
+        }
+
+        .table-selector select, .table-selector input {
+            padding: 0.8rem;
+            font-size: 1.2rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            margin: 0 0.5rem;
+        }
+
+        .learn-display {
+            font-size: 4rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            line-height: 1.2;
+        }
+
+        .quiz-display {
+            font-size: 5rem;
+            font-weight: bold;
+            margin: 2rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+            user-select: none;
+        }
+
+        .quiz-display:hover {
+            transform: scale(1.05);
+        }
+
+        .quiz-display.flipped {
+            animation: flip 0.6s ease-in-out;
+        }
+
+        @keyframes flip {
+            0% { transform: rotateY(0); }
+            50% { transform: rotateY(90deg); }
+            100% { transform: rotateY(0); }
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 3px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #43e97b 0%, #38f9d7 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .color-1 { color: #ff6b6b; }
+        .color-2 { color: #4ecdc4; }
+        .color-3 { color: #45b7d1; }
+        .color-4 { color: #f7b733; }
+        .color-5 { color: #5f27cd; }
+        .color-6 { color: #00d2d3; }
+        .color-7 { color: #ff9ff3; }
+        .color-8 { color: #54a0ff; }
+        .color-9 { color: #5f27cd; }
+        .color-10 { color: #01a3a4; }
+        .color-11 { color: #2d98da; }
+        .color-12 { color: #8395a7; }
+
+        .celebration {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            z-index: 1001;
+            animation: celebrate 1s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes celebrate {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #718096;
+        }
+
+        @media (max-width: 768px) {
+            .content-card {
+                min-width: auto;
+                width: 90%;
+                padding: 2rem;
+            }
+
+            .quiz-display, .learn-display {
+                font-size: 3rem;
+            }
+
+            .settings-drawer {
+                width: 90%;
+                right: -90%;
+            }
+
+            .header {
+                padding: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="logo">🧮 Math Tables Fun</div>
+    <div class="mode-buttons">
+        <button class="btn btn-learn" onclick="setMode('learn')">📚 Learn</button>
+        <button class="btn btn-quiz" onclick="setMode('quiz')">🎯 Quiz</button>
+    </div>
+    <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
+</div>
+
+<div class="settings-drawer" id="settingsDrawer">
+    <div class="settings-header">
+        <h3>Settings</h3>
+        <button class="close-btn" onclick="toggleSettings()">✕</button>
+    </div>
+
+    <div class="setting-group">
+        <label class="setting-label">Table Range</label>
+        <div class="range-inputs">
+            <input type="number" id="rangeFrom" min="1" max="20" value="1" class="setting-input">
+            <span>to</span>
+            <input type="number" id="rangeTo" min="1" max="20" value="12" class="setting-input">
+        </div>
+    </div>
+
+    <div class="setting-group">
+        <label class="setting-label">Quiz Speed (seconds)</label>
+        <input type="range" id="quizSpeed" min="2" max="10" value="4" class="setting-input">
+        <span id="speedDisplay">4s</span>
+    </div>
+
+    <div class="setting-group">
+        <label class="setting-label">Quiz Order</label>
+        <select id="quizOrder" class="setting-input">
+            <option value="random">Random</option>
+            <option value="sequential">Sequential</option>
+        </select>
+    </div>
+
+    <div class="setting-group">
+        <label class="setting-label">Sound Effects</label>
+        <select id="soundEffects" class="setting-input">
+            <option value="on">On</option>
+            <option value="off">Off</option>
+        </select>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="content-card">
+        <div id="welcomeScreen" class="welcome-screen">
+            <h2>Welcome to Math Tables Fun! 🎉</h2>
+            <p>Choose Learning mode to study tables or Quiz mode to test your knowledge!</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalQuestions">0</div>
+                    <div class="stat-label">Questions</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="correctAnswers">0</div>
+                    <div class="stat-label">Correct</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="accuracy">0%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="learnScreen" style="display: none;">
+            <div class="table-selector">
+                <label>Choose table: </label>
+                <select id="learnTableSelect" onchange="showTable()">
+                    <option value="">Select a table</option>
+                </select>
+                <span>or</span>
+                <input type="number" id="customTable" placeholder="Enter number" min="1" max="20" onchange="showTable()">
+            </div>
+            <div id="tableDisplay"></div>
+            <div class="controls">
+                <button class="btn btn-learn" onclick="previousTable()">⬅️ Previous</button>
+                <button class="btn btn-quiz" onclick="nextTable()">Next ➡️</button>
+            </div>
+        </div>
+
+        <div id="quizScreen" style="display: none;">
+            <div id="quizQuestion" class="quiz-display" onclick="revealAnswer()">Click Start Quiz!</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="controls">
+                <button class="btn btn-quiz" id="startQuizBtn" onclick="startQuiz()">🚀 Start Quiz</button>
+                <button class="btn" id="pauseBtn" onclick="pauseQuiz()" style="display: none;">⏸️ Pause</button>
+                <button class="btn" id="stopBtn" onclick="stopQuiz()" style="display: none;">⏹️ Stop</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Global variables
+    let currentMode = 'welcome';
+    let quizInterval;
+    let currentQuestion = {};
+    let showingAnswer = false;
+    let quizActive = false;
+    let questionIndex = 0;
+    let totalQuestions = 0;
+    let correctCount = 0;
+    let currentTableNum = 1;
+
+    // Colors for numbers
+    const colors = ['', 'color-1', 'color-2', 'color-3', 'color-4', 'color-5',
+                   'color-6', 'color-7', 'color-8', 'color-9', 'color-10', 'color-11', 'color-12'];
+
+    // Initialize the app
+    function init() {
+        populateTableSelect();
+        updateSpeedDisplay();
+        loadStats();
+    }
+
+    function populateTableSelect() {
+        const select = document.getElementById('learnTableSelect');
+        select.innerHTML = '<option value="">Select a table</option>';
+        for (let i = 1; i <= 12; i++) {
+            select.innerHTML += `<option value="${i}">${i} times table</option>`;
+        }
+    }
+
+    function setMode(mode) {
+        currentMode = mode;
+        document.getElementById('welcomeScreen').style.display = 'none';
+        document.getElementById('learnScreen').style.display = 'none';
+        document.getElementById('quizScreen').style.display = 'none';
+
+        // Update button states
+        document.querySelectorAll('.mode-buttons .btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        if (mode === 'learn') {
+            document.getElementById('learnScreen').style.display = 'block';
+            document.querySelector('.btn-learn').classList.add('active');
+        } else if (mode === 'quiz') {
+            document.getElementById('quizScreen').style.display = 'block';
+            document.querySelector('.btn-quiz').classList.add('active');
+            resetQuiz();
+        }
+    }
+
+    function showTable() {
+        const select = document.getElementById('learnTableSelect');
+        const customInput = document.getElementById('customTable');
+        const tableDisplay = document.getElementById('tableDisplay');
+
+        let tableNum = select.value || customInput.value;
+        if (!tableNum) return;
+
+        tableNum = parseInt(tableNum);
+        currentTableNum = tableNum;
+
+        let html = '';
+        for (let i = 1; i <= 12; i++) {
+            const colorClass = colors[tableNum] || 'color-1';
+            html += `<div class="learn-display ${colorClass}">${tableNum} × ${i} = ${tableNum * i}</div>`;
+        }
+
+        tableDisplay.innerHTML = html;
+
+        // Clear the other input
+        if (select.value) customInput.value = '';
+        else select.value = '';
+    }
+
+    function previousTable() {
+        if (currentTableNum > 1) {
+            currentTableNum--;
+            document.getElementById('learnTableSelect').value = currentTableNum;
+            document.getElementById('customTable').value = '';
+            showTable();
+        }
+    }
+
+    function nextTable() {
+        if (currentTableNum < 12) {
+            currentTableNum++;
+            document.getElementById('learnTableSelect').value = currentTableNum;
+            document.getElementById('customTable').value = '';
+            showTable();
+        }
+    }
+
+    function generateQuestion() {
+        const rangeFrom = parseInt(document.getElementById('rangeFrom').value);
+        const rangeTo = parseInt(document.getElementById('rangeTo').value);
+        const order = document.getElementById('quizOrder').value;
+
+        let num1, num2;
+
+        if (order === 'sequential') {
+            // Sequential order logic
+            const totalPairs = (rangeTo - rangeFrom + 1) * 12;
+            const currentPair = questionIndex % totalPairs;
+            const tableIndex = Math.floor(currentPair / 12);
+            const multiplier = (currentPair % 12) + 1;
+
+            num1 = rangeFrom + tableIndex;
+            num2 = multiplier;
+        } else {
+            // Random order
+            num1 = Math.floor(Math.random() * (rangeTo - rangeFrom + 1)) + rangeFrom;
+            num2 = Math.floor(Math.random() * 12) + 1;
+        }
+
+        return {
+            num1: num1,
+            num2: num2,
+            answer: num1 * num2,
+            colorClass: colors[num1] || 'color-1'
+        };
+    }
+
+    function displayQuestion() {
+        currentQuestion = generateQuestion();
+        showingAnswer = false;
+        const questionEl = document.getElementById('quizQuestion');
+        questionEl.innerHTML = `${currentQuestion.num1} × ${currentQuestion.num2} = ?`;
+        questionEl.className = `quiz-display ${currentQuestion.colorClass}`;
+
+        totalQuestions++;
+        updateStats();
+    }
+
+    function revealAnswer() {
+        if (!quizActive || showingAnswer) return;
+
+        showingAnswer = true;
+        const questionEl = document.getElementById('quizQuestion');
+        questionEl.classList.add('flipped');
+
+        setTimeout(() => {
+            questionEl.innerHTML = `${currentQuestion.num1} × ${currentQuestion.num2} = ${currentQuestion.answer}`;
+            correctCount++;
+            updateStats();
+            showCelebration();
+        }, 300);
+    }
+
+    function startQuiz() {
+        quizActive = true;
+        questionIndex = 0;
+        document.getElementById('startQuizBtn').style.display = 'none';
+        document.getElementById('pauseBtn').style.display = 'inline-block';
+        document.getElementById('stopBtn').style.display = 'inline-block';
+
+        displayQuestion();
+
+        const speed = parseInt(document.getElementById('quizSpeed').value) * 1000;
+        quizInterval = setInterval(() => {
+            if (!showingAnswer) {
+                revealAnswer();
+                setTimeout(() => {
+                    questionIndex++;
+                    displayQuestion();
+                }, 1000);
+            }
+        }, speed);
+    }
+
+    function pauseQuiz() {
+        if (quizActive) {
+            clearInterval(quizInterval);
+            quizActive = false;
+            document.getElementById('pauseBtn').innerHTML = '▶️ Resume';
+        } else {
+            startQuiz();
+            document.getElementById('pauseBtn').innerHTML = '⏸️ Pause';
+        }
+    }
+
+    function stopQuiz() {
+        clearInterval(quizInterval);
+        quizActive = false;
+        resetQuiz();
+    }
+
+    function resetQuiz() {
+        document.getElementById('startQuizBtn').style.display = 'inline-block';
+        document.getElementById('pauseBtn').style.display = 'none';
+        document.getElementById('stopBtn').style.display = 'none';
+        document.getElementById('pauseBtn').innerHTML = '⏸️ Pause';
+        document.getElementById('quizQuestion').innerHTML = 'Click Start Quiz!';
+        document.getElementById('quizQuestion').className = 'quiz-display';
+        showingAnswer = false;
+    }
+
+    function showCelebration() {
+        const celebrations = ['🎉', '⭐', '🌟', '✨', '🎊', '🏆', '👏', '🎈'];
+        const celebration = document.createElement('div');
+        celebration.className = 'celebration';
+        celebration.innerHTML = celebrations[Math.floor(Math.random() * celebrations.length)];
+        document.body.appendChild(celebration);
+
+        setTimeout(() => {
+            document.body.removeChild(celebration);
+        }, 1000);
+    }
+
+    function updateStats() {
+        document.getElementById('totalQuestions').textContent = totalQuestions;
+        document.getElementById('correctAnswers').textContent = correctCount;
+        const accuracy = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
+        document.getElementById('accuracy').textContent = accuracy + '%';
+
+        saveStats();
+    }
+
+    function saveStats() {
+        const stats = {
+            totalQuestions: totalQuestions,
+            correctAnswers: correctCount
+        };
+        // Note: Not using localStorage as per requirements
+        // Stats will reset on page reload
+    }
+
+    function loadStats() {
+        // Stats start fresh each session
+        totalQuestions = 0;
+        correctCount = 0;
+        updateStats();
+    }
+
+    function toggleSettings() {
+        const drawer = document.getElementById('settingsDrawer');
+        drawer.classList.toggle('open');
+    }
+
+    function updateSpeedDisplay() {
+        const speed = document.getElementById('quizSpeed').value;
+        document.getElementById('speedDisplay').textContent = speed + 's';
+    }
+
+    // Event listeners
+    document.getElementById('quizSpeed').addEventListener('input', updateSpeedDisplay);
+
+    document.getElementById('rangeFrom').addEventListener('change', function() {
+        const from = parseInt(this.value);
+        const to = parseInt(document.getElementById('rangeTo').value);
+        if (from > to) {
+            document.getElementById('rangeTo').value = from;
+        }
+    });
+
+    document.getElementById('rangeTo').addEventListener('change', function() {
+        const to = parseInt(this.value);
+        const from = parseInt(document.getElementById('rangeFrom').value);
+        if (to < from) {
+            document.getElementById('rangeFrom').value = to;
+        }
+    });
+
+    // Close settings when clicking outside
+    document.addEventListener('click', function(e) {
+        const drawer = document.getElementById('settingsDrawer');
+        const settingsBtn = document.querySelector('.settings-btn');
+
+        if (!drawer.contains(e.target) && !settingsBtn.contains(e.target)) {
+            drawer.classList.remove('open');
+        }
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.key === ' ' && currentMode === 'quiz' && quizActive) {
+            e.preventDefault();
+            revealAnswer();
+        }
+    });
+
+    // Initialize app when page loads
+    window.onload = init;
+</script>
+</body>
+</html>
