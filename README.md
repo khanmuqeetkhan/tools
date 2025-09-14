@@ -17,7 +17,7 @@ Available tools for kids & adults
 
 ## Flash cards
 
-### [Driving vocabulary] (https://khanmuqeetkhan.github.io/tools/flash-cards/driving/index.html)
+### [Driving vocabulary](https://khanmuqeetkhan.github.io/tools/flash-cards/driving/index.html)
 
-### [General knowledge] (https://khanmuqeetkhan.github.io/tools/flash-cards/general-knowledge/index.html)
+### [General knowledge](https://khanmuqeetkhan.github.io/tools/flash-cards/general-knowledge/index.html)
 
