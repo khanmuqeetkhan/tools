@@ -1,4 +1,5 @@
-# Tools
+####
+Available tools for kids & adults
 
 ## Arabic
 
@@ -13,4 +14,10 @@
 ## Quiz
 
 ### [Country & capital](https://khanmuqeetkhan.github.io/tools/quiz/capitals/index.html)
+
+## Flash cards
+
+### [Driving vocabulary] (https://khanmuqeetkhan.github.io/tools/flash-cards/driving/index.html)
+
+### [General knowledge] (https://khanmuqeetkhan.github.io/tools/flash-cards/general-knowledge/index.html)
 
