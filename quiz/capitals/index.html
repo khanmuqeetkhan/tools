@@ -369,11 +369,14 @@
     </div>
 
     <div class="settings-group">
-        <h3>Quiz Difficulty</h3>
-        <select id="difficultyLevel">
-            <option value="easy">Easy (Most Famous)</option>
-            <option value="medium">Medium (Well Known)</option>
-            <option value="hard">Hard (All Countries)</option>
+        <h3>Select a continent</h3>
+        <select id="continent">
+            <option value="africa">Africa</option>
+            <option value="asia">Asia</option>
+            <option value="europe">Europe</option>
+            <option value="north_america">North America</option>
+            <option value="source_america">South America</option>
+            <option value="all">All continents</option>
         </select>
     </div>
 </div>
@@ -434,77 +437,9 @@
         <div class="learn-list" id="learnList"></div>
     </div>
 </div>
-
+<script src="./countryAndCapitals.js"></script>
 <script>
     // Country and Capital data
-    const countryCapitalData = {
-        easy: [
-            { country: "United States", capital: "Washington, D.C." },
-            { country: "United Kingdom", capital: "London" },
-            { country: "France", capital: "Paris" },
-            { country: "Germany", capital: "Berlin" },
-            { country: "Italy", capital: "Rome" },
-            { country: "Spain", capital: "Madrid" },
-            { country: "Japan", capital: "Tokyo" },
-            { country: "China", capital: "Beijing" },
-            { country: "India", capital: "New Delhi" },
-            { country: "Russia", capital: "Moscow" },
-            { country: "Canada", capital: "Ottawa" },
-            { country: "Australia", capital: "Canberra" },
-            { country: "Brazil", capital: "Brasília" },
-            { country: "Mexico", capital: "Mexico City" },
-            { country: "Egypt", capital: "Cairo" },
-            { country: "South Africa", capital: "Cape Town" },
-            { country: "Turkey", capital: "Ankara" },
-            { country: "Greece", capital: "Athens" },
-            { country: "Netherlands", capital: "Amsterdam" },
-            { country: "Sweden", capital: "Stockholm" }
-        ],
-        medium: [
-            { country: "Argentina", capital: "Buenos Aires" },
-            { country: "Chile", capital: "Santiago" },
-            { country: "Colombia", capital: "Bogotá" },
-            { country: "Peru", capital: "Lima" },
-            { country: "Venezuela", capital: "Caracas" },
-            { country: "Thailand", capital: "Bangkok" },
-            { country: "Vietnam", capital: "Hanoi" },
-            { country: "Indonesia", capital: "Jakarta" },
-            { country: "Philippines", capital: "Manila" },
-            { country: "Malaysia", capital: "Kuala Lumpur" },
-            { country: "South Korea", capital: "Seoul" },
-            { country: "Nigeria", capital: "Abuja" },
-            { country: "Kenya", capital: "Nairobi" },
-            { country: "Morocco", capital: "Rabat" },
-            { country: "Saudi Arabia", capital: "Riyadh" },
-            { country: "Iran", capital: "Tehran" },
-            { country: "Poland", capital: "Warsaw" },
-            { country: "Czech Republic", capital: "Prague" },
-            { country: "Hungary", capital: "Budapest" },
-            { country: "Portugal", capital: "Lisbon" }
-        ],
-        hard: [
-            { country: "Bangladesh", capital: "Dhaka" },
-            { country: "Pakistan", capital: "Islamabad" },
-            { country: "Sri Lanka", capital: "Colombo" },
-            { country: "Nepal", capital: "Kathmandu" },
-            { country: "Myanmar", capital: "Naypyidaw" },
-            { country: "Cambodia", capital: "Phnom Penh" },
-            { country: "Laos", capital: "Vientiane" },
-            { country: "Mongolia", capital: "Ulaanbaatar" },
-            { country: "Kazakhstan", capital: "Nur-Sultan" },
-            { country: "Uzbekistan", capital: "Tashkent" },
-            { country: "Azerbaijan", capital: "Baku" },
-            { country: "Georgia", capital: "Tbilisi" },
-            { country: "Armenia", capital: "Yerevan" },
-            { country: "Belarus", capital: "Minsk" },
-            { country: "Ukraine", capital: "Kyiv" },
-            { country: "Moldova", capital: "Chișinău" },
-            { country: "Romania", capital: "Bucharest" },
-            { country: "Bulgaria", capital: "Sofia" },
-            { country: "Serbia", capital: "Belgrade" },
-            { country: "Croatia", capital: "Zagreb" }
-        ]
-    };
 
     // Game state
     let currentMode = '';
@@ -516,7 +451,7 @@
     // Settings
     let pauseDuration = 1000; // milliseconds
     let soundEnabled = true;
-    let difficultyLevel = 'easy';
+    let continent = 'all';
 
     // Initialize settings
     function initSettings() {
@@ -529,8 +464,8 @@
             soundEnabled = this.checked;
         });
 
-        document.getElementById('difficultyLevel').addEventListener('change', function() {
-            difficultyLevel = this.value;
+        document.getElementById('continent').addEventListener('change', function() {
+            continent = this.value;
         });
     }
 
@@ -545,11 +480,26 @@
 
     // Get data based on difficulty
     function getData() {
-        let data = [...countryCapitalData.easy];
-        if (difficultyLevel === 'medium') {
-            data = [...countryCapitalData.easy, ...countryCapitalData.medium];
-        } else if (difficultyLevel === 'hard') {
-            data = [...countryCapitalData.easy, ...countryCapitalData.medium, ...countryCapitalData.hard];
+
+        let data = [];
+        if (continent === 'africa') {
+            data = [...countryCapitalData.africa];
+        } if (continent === 'asia') {
+            data = [...countryCapitalData.asia];
+        } if (continent === 'europe') {
+            data = [...countryCapitalData.europe];
+        } if (continent === 'north_america') {
+            data = [...countryCapitalData.north_america];
+        } else if (continent === 'south_america') {
+            data = [...countryCapitalData.south_america];
+        } else {
+           data = [
+           ...countryCapitalData.africa,
+           ...countryCapitalData.asia,
+           ...countryCapitalData.europe,
+           ...countryCapitalData.north_america,
+           ...countryCapitalData.south_america
+           ]
         }
         return data;
     }
