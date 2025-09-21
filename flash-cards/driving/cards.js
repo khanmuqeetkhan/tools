@@ -1,5 +1,9 @@
 // Driving theory vocabulary flash cards - organized by topic
 const flashCardSets = {
+        "terminology": [
+            { term: "Yield", definition: "To yield means to slow down or stop to let another vehicle, pedestrian, or cyclist go before you if they have the right of way."},
+            { term: "Adverse conditions", definition: "Difficult or dangerous driving conditions requiring extra caution" }
+        ],
         "traffic-rules": [
             { term: "Unprotected road user", definition: "A person using the road who is not protected by a vehicle (pedestrians, cyclists, moped riders)" },
             { term: "Give way", definition: "To allow another vehicle or road user to go first; yield the right of way" },
@@ -67,9 +71,6 @@ const flashCardSets = {
             { term: "Adverse conditions", definition: "Difficult or dangerous driving conditions requiring extra caution" }
         ],
         "legal-admin": [
-            { term: "Theory test", definition: "Written examination testing knowledge of traffic rules and driving theory" },
-            { term: "Practical driving test", definition: "On-road examination testing actual driving skills and safety" },
-            { term: "Driving licence", definition: "Legal document permitting a person to drive specific types of vehicles" },
             { term: "Probationary licence", definition: "Temporary licence for new drivers with special restrictions" },
             { term: "Disqualification", definition: "Legal removal of driving privileges due to serious traffic violations" },
             { term: "Traffic violation", definition: "Breaking traffic laws or regulations while driving" },
@@ -81,7 +82,6 @@ const flashCardSets = {
             { term: "Compulsory", definition: "Required by law; mandatory" },
             { term: "Registration document", definition: "Official paper proving a vehicle is legally registered" },
             { term: "Vehicle tax", definition: "Annual fee paid to government for right to use vehicle on public roads" },
-            { term: "MOT test", definition: "Annual test of vehicle safety and environmental standards" },
             { term: "Third party", definition: "Other people who might be affected by your driving (not you or your passengers)" },
             { term: "Comprehensive insurance", definition: "Insurance covering damage to your own vehicle as well as others" },
             { term: "Excess", definition: "Amount you must pay toward insurance claim before insurance covers the rest" },
@@ -140,7 +140,6 @@ const flashCardSets = {
             { term: "Duty to stop", definition: "When you must stop completely and give way before proceeding, regardless of traffic" },
             { term: "Economical driving", definition: "Fuel efficient and environmentally friendly driving style" },
             { term: "Electronic stability control (ESC)", definition: "Help system that detects and assists when car is about to start skidding" },
-            { term: "Engine braking", definition: "Energy efficient method of slowing car without supplying fuel to engine" },
             { term: "Flying overtaking", definition: "Overtaking manoeuvre approaching slower vehicle at significantly higher speed" },
 
             // Lighting & Visibility
@@ -159,7 +158,6 @@ const flashCardSets = {
             { term: "The jackknife effect", definition: "Dangerous situation when trailer rear end slides, causing car and trailer to fold like jackknife" },
             { term: "Black ice", definition: "Thin, nearly invisible ice on road surfaces that is extremely slippery" },
             { term: "Crosswinds", definition: "Strong winds blowing across the direction of travel" },
-            { term: "Adverse conditions", definition: "Difficult or dangerous driving conditions requiring extra caution" },
 
             // Legal & Administrative
             { term: "Aggravated drunk driving", definition: "Serious criminal offence with limit of 1.0 per mille blood alcohol" },
@@ -264,8 +262,6 @@ const flashCardSets = {
             { term: "Risk training", definition: "Mandatory education about dangerous driving behaviors including alcohol, drugs, fatigue, and high-risk situations" },
             { term: "Skid pan", definition: "A specially designed wet surface used in driver training to practice controlling a vehicle when it loses traction" },
             { term: "Theory test with support", definition: "Special accommodations for the driving test including extended time, oral support, or interpreter services for people with learning difficulties" },
-            { term: "Knowledge exam", definition: "The official name for the Swedish driving theory test that assesses your understanding of traffic rules and safety" },
-            { term: "Multiple-choice questions", definition: "Test questions that provide several answer options where you must select the one correct response" },
             { term: "Road markings", definition: "Painted lines, symbols, and signs on the road surface that provide guidance and regulation for drivers" },
             { term: "Developing hazards", definition: "Potential dangers on the road that are starting to occur and may require immediate driver action" },
             { term: "Stop or park", definition: "The act of bringing your vehicle to a complete halt temporarily (stop) or leaving it stationary for a period (park)" },
@@ -329,12 +325,10 @@ const flashCardSets = {
             { term: "Glare", definition: "Bright light that makes it difficult to see, often from sun or vehicle headlights" },
 
             // Legal & Administrative
-            { term: "Knowledge exam", definition: "The official name for the Swedish driving theory test that assesses understanding of traffic rules" },
             { term: "Risk training", definition: "Mandatory education about dangerous driving behaviors including alcohol, drugs, fatigue, and risks" },
             { term: "Provisional license", definition: "A temporary driving permit with restrictions, issued before obtaining a full license" },
             { term: "Disqualification", definition: "The legal removal of someone's right to drive for a specified period due to serious violations" },
             { term: "Endorsement", definition: "Penalty points added to a driving record for traffic violations" },
-            { term: "MOT test", definition: "Annual vehicle safety inspection to ensure roadworthiness" },
 
             // Speed & Limits
             { term: "Speed limit", definition: "The maximum legal speed allowed on a particular section of road" },

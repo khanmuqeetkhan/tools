@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspirational Quotes</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="container">
+    <div class="quote-card">
+        <div class="quote-counter">
+            <span id="currentQuote">1</span> / <span id="totalQuotes">0</span>
+        </div>
+
+        <div class="progress-bar" id="progressBar"></div>
+
+        <div class="quote-text" id="quoteText"></div>
+        <div class="quote-author" id="quoteAuthor"></div>
+        <div class="quote-details" id="quoteDetails"></div>
+
+        <div class="controls">
+            <button class="control-btn" id="prevBtn">
+                ⟨ Previous
+            </button>
+            <button class="control-btn" id="playPauseBtn">
+                ⏸ Pause
+            </button>
+            <button class="control-btn" id="nextBtn">
+                Next ⟩
+            </button>
+        </div>
+    </div>
+</div>
+
+<button class="settings-toggle" id="settingsToggle">
+    ⚙
+</button>
+
+<div class="settings-drawer" id="settingsDrawer">
+    <div class="settings-header">Settings</div>
+
+    <div class="setting-group">
+        <label class="setting-label">Auto-play Interval (seconds)</label>
+        <input type="range" class="setting-range" id="intervalRange" min="2" max="30" value="5">
+        <div class="range-display" id="intervalDisplay">5 seconds</div>
+    </div>
+
+    <div class="setting-group">
+        <label class="setting-label">Animation Speed</label>
+        <select class="setting-input" id="animationSpeed">
+            <option value="0.5">Fast</option>
+            <option value="0.8" selected>Normal</option>
+            <option value="1.2">Slow</option>
+        </select>
+    </div>
+
+    <div class="setting-group">
+        <label class="setting-label">Random Order</label>
+        <select class="setting-input" id="randomOrder">
+            <option value="false" selected>Sequential</option>
+            <option value="true">Random</option>
+        </select>
+    </div>
+
+    <div class="setting-group">
+        <label class="setting-label">Theme</label>
+        <select class="setting-input" id="themeSelect">
+            <option value="default" selected>Ocean Blue</option>
+            <option value="sunset">Sunset Orange</option>
+            <option value="forest">Forest Green</option>
+            <option value="royal">Royal Purple</option>
+        </select>
+    </div>
+</div>
+
+<script src="./quotes.js"></script>
+<script src="./actions.js"></script>
+</body>
+</html>

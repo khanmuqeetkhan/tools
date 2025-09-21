@@ -1,7 +1,7 @@
 // App state
     let currentMode = 'learning';
     let currentQuestionIndex = 0;
-    let currentCardSet = 'traffic-rules';
+    let currentCardSet = 'advanced';
     let flashCards = flashCardSets[currentCardSet];
     let score = 0;
     let isAutoPlaying = false;
