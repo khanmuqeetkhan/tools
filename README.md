@@ -20,3 +20,7 @@
 
 ### [General knowledge](https://khanmuqeetkhan.github.io/tools/flash-cards/general-knowledge/index.html)
 
+### [English](https://khanmuqeetkhan.github.io/tools/flash-cards/english/index.html)
+
+### [Swedish](https://khanmuqeetkhan.github.io/tools/flash-cards/swedish/index.html)
+

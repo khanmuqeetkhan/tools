@@ -14,6 +14,13 @@ const quotesData = [
         "source": "Stanford Commencement Address"
     },
     {
+        "text": "Nations that don't have a capacity to deal with their past, they have a very difficult time to look into the future.",
+        "author": "Alexander Stubb",
+        "date": "?",
+        "category": "Politics",
+        "source": "Stanford Commencement Address"
+    },
+    {
         "text": "The only way to do great work is to love what you do.",
         "author": "Steve Jobs",
         "date": "2005",
