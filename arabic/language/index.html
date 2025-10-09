@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash Card Learning App</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="cards.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🎓 Flash Card Learning App</h1>
+        <p>Learn and practice with interactive flashcards!</p>
+    </div>
+
+    <div class="stats-bar">
+        <div class="score-display">Score: <span id="score">0</span></div>
+        <div class="question-counter">Question <span id="current-question">1</span> of <span id="total-questions">20</span></div>
+        <div class="auto-play-controls">
+            <button id="play-pause-btn" class="play-pause-btn">▶ Auto Play</button>
+            <button id="reset-btn" class="reset-btn">🔄 Reset</button>
+        </div>
+    </div>
+
+    <div class="mode-selector">
+        <button id="learning-mode-btn" class="mode-btn active">📖 Learning Mode</button>
+        <button id="flashcard-mode-btn" class="mode-btn">⚡ Flash Card Mode</button>
+    </div>
+
+    <div class="main-content">
+        <div class="card-container">
+            <div id="learning-content" class="learning-mode">
+                <div class="question-text" id="learning-question">What is the capital of France?</div>
+                <div class="answer-text" id="learning-answer">Paris</div>
+            </div>
+
+            <div id="flashcard-content" class="flashcard" style="display: none;">
+                <div class="card-inner" id="card-inner">
+                    <div class="card-front">
+                        <div class="question-text" id="flashcard-question">What is the capital of France?</div>
+                        <div class="flip-hint">Click to flip</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="answer-text" id="flashcard-answer">Paris</div>
+                        <div class="answer-text" id="flashcard-example">Paris</div>
+                        <div class="answer-text" id="flashcard-tenses">Paris</div>
+                        <div class="flip-hint">Click to flip back</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button id="prev-btn" class="nav-btn">⬅ Previous</button>
+        <div class="progress-indicator" id="progress">1 / 20</div>
+        <button id="next-btn" class="nav-btn">Next ➡</button>
+    </div>
+</div>
+
+<button class="settings-btn" id="settings-btn">⚙</button>
+
+<div class="settings-drawer" id="settings-drawer">
+    <div class="settings-header">
+        <h2>⚙ Settings</h2>
+        <button class="close-btn" id="close-settings">✕</button>
+    </div>
+
+    <div class="setting-item">
+        <label class="setting-label">Auto-play Speed (seconds)</label>
+        <input type="range" class="setting-input" id="auto-speed" min="1" max="10" value="3">
+        <div>Current: <span id="speed-value">3</span> seconds</div>
+    </div>
+
+    <div class="setting-item">
+        <label class="setting-label">Card Set</label>
+        <select class="setting-input" id="card-set-selector">
+            <option value="kids">Kids</option>
+            <option value="math">Basic Math</option>
+            <option value="science">Science Facts</option>
+            <option value="history">World History</option>
+        </select>
+    </div>
+
+    <div class="setting-item">
+        <label class="setting-label">Theme Color</label>
+        <select class="setting-input" id="theme-selector">
+            <option value="blue">Ocean Blue</option>
+            <option value="purple">Royal Purple</option>
+            <option value="green">Nature Green</option>
+            <option value="orange">Sunset Orange</option>
+        </select>
+    </div>
+</div>
+<script src="actions.js"></script>
+</body>
+</html>
