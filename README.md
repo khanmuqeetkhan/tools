@@ -10,6 +10,8 @@
 
 ### [Tables](https://khanmuqeetkhan.github.io/tools/numbers/tables/index.html)
 
+### [Arithmetic operations](https://khanmuqeetkhan.github.io/tools/numbers/arithmetic/index.html)
+
 ## Quiz
 
 ### [Country & capital](https://khanmuqeetkhan.github.io/tools/quiz/capitals/index.html)

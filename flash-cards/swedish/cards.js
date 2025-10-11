@@ -31,6 +31,8 @@ const flashCardSets = {
         { question: "utbrast", answer: "säger plötsligt något (med eftertryck).", example: "'Det gör jag aldrig!' utbrast han, alldeles röd i ansiktet.", tenses: "att utbrista, utbrister, utbrast, har utbrustit, –, utbrist!" },
         { question: "grimas", answer: "grimace, funny face.", example: "han gjorde en grimas av smärta", tenses: "grimasen, grimas, grimaser, grimaserna" },
         { question: "gned", answer: "gnuggar, gnor (rub).", example: "hon vaknade och gned sig i ögonen", tenses: "att gnida, gnider, gned, har gnidit, är gniden, gnid!" },
+        { question: "böla", answer: "storgråter.", example: "Vilken sorglig film – det var länge sedan jag bölade så!", tenses: "att böla, bölar, bölade, har bölat, –, böla!" },
+        { question: "fann", answer: "hon fann barnen en bit in i skogen.", example: "hittar, upptäcker", tenses: "att finna, finner, fann, har funnit, är funnen, finn" },
 
     ]
 };

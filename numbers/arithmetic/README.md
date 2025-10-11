@@ -1,0 +1,15 @@
+# Prompt
+- I want to create a page to be able to play with numbers and learn arithematic operations.
+- Create a html page with javascript and css to show numbers after few seconds.
+- Use any external library if required but it should not be required to run it on any server.
+- The site should look professional.
+- There should be an option to select (big and clear) to select either Addition, Subsctraction, Multiplication or Division in the form of buttons.
+- It should be only two numbers arithematic operation, with advanced options to control the number of numbers for the operation.
+- The numbers should be shown randomly, and numbers should not be repeated within a session.
+- Provide a settings panel in the right corner, it should open as a draw.
+- Also it should be configurable to select the range of numbers, default should be 1 - 9 with the option to select 9 - 19, 1 - 19, 9 - 29, 19 - 29, 1 - 29 an similarly.
+- number should be large and bold. And should occupy most the page.
+- And more features if you want to be more creative.
+- It should work when I just copy and paste it in a html file.
+- Enhance this by showing few objects on the left, if required move the number part to a bit right.
+- Then use objects like ducks, balls, etc and randomly associate them to each number. And this should only be available for beginners like numbers between 1 - 9
