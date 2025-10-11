@@ -220,6 +220,25 @@
             text-align: center;
         }
 
+        .next-btn {
+            margin-top: 30px;
+            padding: 15px 50px;
+            font-size: 18px;
+            font-weight: bold;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            background: rgba(100, 200, 255, 0.3);
+            color: white;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .next-btn:hover {
+            background: rgba(100, 200, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
         .drawer {
             position: fixed;
             right: -400px;
@@ -404,6 +423,7 @@
             </div>
             <div class="result-display hidden" id="resultDisplay">?</div>
             <div class="click-hint">Click on ? to reveal the answer</div>
+            <button class="next-btn" id="nextBtn">Next →</button>
         </div>
     </div>
 </div>
@@ -581,6 +601,11 @@
                     resultDisplay.textContent = '?';
                     resultDisplay.classList.add('hidden');
                 }
+            });
+
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                this.generateNumbers();
+                this.displayNumbers();
             });
 
             document.addEventListener('keydown', (e) => {
