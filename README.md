@@ -4,6 +4,10 @@
 
 ### [Letters](https://khanmuqeetkhan.github.io/tools/arabic/letters/index.html)
 
+### [Language](https://khanmuqeetkhan.github.io/tools/arabic/language/index.html)
+
+### [Dua](https://khanmuqeetkhan.github.io/tools/arabic/dua/index.html)
+
 ## Numbers
 
 ### [Random numbers](https://khanmuqeetkhan.github.io/tools/numbers/random/index.html)
