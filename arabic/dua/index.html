@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabic Verse Viewer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=AmiriQuranColored:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2d3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light-bg: #ecf0f1;
+            --card-bg: #ffffff;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #bdc3c7;
+        }
+
+        body.dark-mode {
+            --primary: #1a1a1a;
+            --secondary: #3498db;
+            --light-bg: #2a2a2a;
+            --card-bg: #333333;
+            --text-dark: #ecf0f1;
+            --text-light: #bdc3c7;
+            --border: #444444;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #ffffff 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            transition: background 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: slideDown 0.6s ease;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: var(--text-light);
+            font-size: 1.1em;
+            font-weight: 300;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 50px 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .source {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: var(--secondary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 30px;
+            margin-top: 15px;
+            color: var(--primary);
+        }
+
+        .verse-section {
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid rgba(52, 152, 219, 0.2);
+        }
+
+        .verse-label {
+            font-size: 0.9em;
+            color: var(--text-light);
+            font-weight: 500;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .verse {
+            font-family: 'AmiriQuranColored', serif;
+            font-size: 3em;
+            line-height: 2;
+            color: var(--accent);
+            text-align: right;
+            direction: rtl;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .meaning {
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: var(--text-dark);
+            font-weight: 300;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--secondary), #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .counter {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.95em;
+            margin-bottom: 20px;
+        }
+
+        .drawer-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .drawer-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .drawer {
+            position: fixed;
+            right: -350px;
+            top: 0;
+            width: 350px;
+            height: 100vh;
+            background: var(--card-bg);
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2);
+            transition: right 0.3s ease;
+            z-index: 101;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        .drawer.open {
+            right: 0;
+        }
+
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .drawer-close {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: color 0.3s ease;
+        }
+
+        .drawer-close:hover {
+            color: var(--accent);
+        }
+
+        .setting-group {
+            margin-bottom: 25px;
+        }
+
+        .setting-label {
+            display: block;
+            font-size: 0.95em;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--secondary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .color-option {
+            width: 100%;
+            height: 40px;
+            border-radius: 8px;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .color-option:hover {
+            transform: scale(0.95);
+        }
+
+        .color-option.active {
+            border-color: var(--text-dark);
+        }
+
+        .backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 99;
+        }
+
+        .backdrop.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .card {
+                padding: 30px 20px;
+            }
+
+            .source {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 15px;
+            }
+
+            .verse {
+                font-size: 1.4em;
+            }
+
+            .drawer {
+                width: 100%;
+                right: -100%;
+            }
+
+            .drawer-toggle {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>✨ Quranic verses & Duas</h1>
+        <p>Explore meaningful verses with translations and insights</p>
+    </div>
+
+    <div class="card-container">
+        <div class="card">
+            <div class="source" id="cardSource">Quran 21:30</div>
+            <h2 class="card-title" id="cardTitle">Loading...</h2>
+
+            <div class="verse-section">
+                <div class="verse-label">Verse</div>
+                <div class="verse" id="cardVerse">أَوَلَمْ يَرَ الَّذِينَ كَفَرُوا</div>
+            </div>
+
+            <div>
+                <div class="verse-label">Meaning</div>
+                <div class="meaning" id="cardMeaning">Loading meaning...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="counter">
+        <span id="cardCounter">1</span> / <span id="cardTotal">1</span>
+    </div>
+
+    <div class="controls">
+        <button class="btn" id="prevBtn" onclick="previousCard()">← Previous</button>
+        <button class="btn" id="nextBtn" onclick="nextCard()">Next →</button>
+    </div>
+</div>
+
+<!-- Settings Drawer -->
+<div class="backdrop" id="backdrop" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+    <div class="drawer-header">
+        <span>Settings</span>
+        <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    </div>
+
+    <div class="setting-group">
+        <label class="setting-label">
+            <span>Dark Mode</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                <span class="slider"></span>
+            </label>
+        </label>
+    </div>
+
+    <div class="setting-group">
+        <label class="setting-label">Font Size</label>
+        <input type="range" id="fontSizeSlider" min="80" max="120" value="100" onchange="adjustFontSize(this.value)" style="width: 100%; cursor: pointer;">
+        <div style="text-align: center; margin-top: 10px; color: var(--text-light); font-size: 0.9em;">
+            <span id="fontSizeValue">100</span>%
+        </div>
+    </div>
+
+    <div class="setting-group">
+        <label class="setting-label">Theme Color</label>
+        <div class="color-palette">
+            <div class="color-option active" style="background: linear-gradient(135deg, #3498db, #e74c3c);" onclick="changeTheme('blue', this)"></div>
+            <div class="color-option" style="background: linear-gradient(135deg, #9b59b6, #f39c12);" onclick="changeTheme('purple', this)"></div>
+            <div class="color-option" style="background: linear-gradient(135deg, #1abc9c, #16a085);" onclick="changeTheme('teal', this)"></div>
+            <div class="color-option" style="background: linear-gradient(135deg, #c0392b, #e74c3c);" onclick="changeTheme('red', this)"></div>
+        </div>
+    </div>
+
+    <div class="setting-group">
+        <label class="setting-label">Line Spacing</label>
+        <input type="range" id="lineSpacingSlider" min="1.5" max="2.5" step="0.1" value="2" onchange="adjustLineSpacing(this.value)" style="width: 100%; cursor: pointer;">
+        <div style="text-align: center; margin-top: 10px; color: var(--text-light); font-size: 0.9em;">
+            <span id="lineSpacingValue">2</span>
+        </div>
+    </div>
+</div>
+
+<button class="drawer-toggle" onclick="openDrawer()">⚙️</button>
+<script src="verses.js"></script>
+<script>
+    let currentIndex = 0;
+
+    function displayCard(index) {
+        if (index < 0 || index >= verses.length) return;
+
+        const verse = verses[index];
+        document.getElementById('cardSource').textContent = verse.source;
+        document.getElementById('cardTitle').textContent = verse.title;
+        document.getElementById('cardVerse').textContent = verse.verse;
+        document.getElementById('cardMeaning').textContent = verse.meaning;
+        document.getElementById('cardCounter').textContent = index + 1;
+        document.getElementById('cardTotal').textContent = verses.length;
+
+        updateButtonStates();
+    }
+
+    function updateButtonStates() {
+        document.getElementById('prevBtn').classList.toggle('btn-disabled', currentIndex === 0);
+        document.getElementById('prevBtn').disabled = currentIndex === 0;
+        document.getElementById('nextBtn').classList.toggle('btn-disabled', currentIndex === verses.length - 1);
+        document.getElementById('nextBtn').disabled = currentIndex === verses.length - 1;
+    }
+
+    function nextCard() {
+        if (currentIndex < verses.length - 1) {
+            currentIndex++;
+            displayCard(currentIndex);
+        }
+    }
+
+    function previousCard() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            displayCard(currentIndex);
+        }
+    }
+
+    function openDrawer() {
+        document.getElementById('drawer').classList.add('open');
+        document.getElementById('backdrop').classList.add('visible');
+    }
+
+    function closeDrawer() {
+        document.getElementById('drawer').classList.remove('open');
+        document.getElementById('backdrop').classList.remove('visible');
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    }
+
+    function adjustFontSize(value) {
+        document.documentElement.style.fontSize = (value / 100) * 16 + 'px';
+        document.getElementById('fontSizeValue').textContent = value;
+        localStorage.setItem('fontSize', value);
+    }
+
+    function adjustLineSpacing(value) {
+        document.getElementById('cardVerse').style.lineHeight = value;
+        document.getElementById('lineSpacingValue').textContent = value;
+        localStorage.setItem('lineSpacing', value);
+    }
+
+    function changeTheme(theme, element) {
+        const themes = {
+            blue: { secondary: '#3498db', accent: '#e74c3c' },
+            purple: { secondary: '#9b59b6', accent: '#f39c12' },
+            teal: { secondary: '#1abc9c', accent: '#16a085' },
+            red: { secondary: '#c0392b', accent: '#e91e63' }
+        };
+
+        const colors = themes[theme];
+        document.documentElement.style.setProperty('--secondary', colors.secondary);
+        document.documentElement.style.setProperty('--accent', colors.accent);
+
+        document.querySelectorAll('.color-option').forEach(el => el.classList.remove('active'));
+        element.classList.add('active');
+
+        localStorage.setItem('theme', JSON.stringify({ theme, colors }));
+    }
+
+    function loadSettings() {
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('darkModeToggle').checked = true;
+        }
+
+        const fontSize = localStorage.getItem('fontSize') || '100';
+        adjustFontSize(fontSize);
+        document.getElementById('fontSizeSlider').value = fontSize;
+
+        const lineSpacing = localStorage.getItem('lineSpacing') || '2';
+        adjustLineSpacing(lineSpacing);
+        document.getElementById('lineSpacingSlider').value = lineSpacing;
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            const { theme, colors } = JSON.parse(savedTheme);
+            document.documentElement.style.setProperty('--secondary', colors.secondary);
+            document.documentElement.style.setProperty('--accent', colors.accent);
+        }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        loadSettings();
+        displayCard(0);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextCard();
+            if (e.key === 'ArrowLeft') previousCard();
+            if (e.key === 'Escape') closeDrawer();
+        });
+    });
+</script>
+</body>
+</html>
