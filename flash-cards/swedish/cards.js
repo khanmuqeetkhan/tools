@@ -33,6 +33,12 @@ const flashCardSets = {
         { question: "gned", answer: "gnuggar, gnor (rub).", example: "hon vaknade och gned sig i ögonen", tenses: "att gnida, gnider, gned, har gnidit, är gniden, gnid!" },
         { question: "böla", answer: "storgråter.", example: "Vilken sorglig film – det var länge sedan jag bölade så!", tenses: "att böla, bölar, bölade, har bölat, –, böla!" },
         { question: "fann", answer: "hon fann barnen en bit in i skogen.", example: "hittar, upptäcker", tenses: "att finna, finner, fann, har funnit, är funnen, finn" },
+        { question: "omslags-", answer: "cover.", example: "omslagsbilderna", tenses: "" },
+        { question: "hävda", answer: "påstår.", example: "polisen hävdade att branden var anlagd", tenses: "att hävda, hävde, hävdade, har hävdat, är hävdad, hävda!" },
+        { question: "strök", answer: "drar med handen över en yta.", example: "han strök sin flickvän över håret", tenses: "att stryka, stryker, strök, har strukit, är struken, stryk!" },
+        { question: "strök", answer: "gör slät (med strykjärn).", example: "hon strök sin klänning innan hon gick till festen", tenses: "att stryka, stryker, strök, har strukit, är struken, stryk!" },
+        { question: "strök", answer: "drar ett streck över, tar bort, utelämnar.", example: "de strök hans namn från listan", tenses: "att stryka, stryker, strök, har strukit, är struken, stryk!" },,
+        { question: "ättling", answer: "efterkommande inom en släkt (descendant).", example: "många sydafrikaner är ättlingar till holländska nybyggare på 1600-talet", tenses: "ättlingen, ättlingar, ättlingarna!" },
 
     ]
 };

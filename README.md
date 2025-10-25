@@ -3,6 +3,7 @@
 ## Arabic
 
 ### [Letters](https://khanmuqeetkhan.github.io/tools/arabic/letters/index.html)
+- ### [Diacritical](https://khanmuqeetkhan.github.io/tools/arabic/letters/diacritical/index.html)
 
 ### [Language](https://khanmuqeetkhan.github.io/tools/arabic/language/index.html)
 
